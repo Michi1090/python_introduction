@@ -13,10 +13,8 @@ class animalBaseClass():
 
 
 class snakeClass(animalBaseClass):
-    # def __init__(self, num):
-    #     super().__init__(num)
-    #     print('蛇です')
-    def test(self):
+    def __init__(self, num):
+        super().__init__(num)
         print('蛇です')
 
 
