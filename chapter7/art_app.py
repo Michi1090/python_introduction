@@ -12,7 +12,7 @@ class MetropolitanApp:
     # コンストラクタ
     def __init__(self, base):
         # URLの設定
-        self.api_object_url = 'https://collectionapi.metmuseum.org/public/collection/v1/objects'
+        self.api_object_url = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/'
         self.api_search_url = 'https://collectionapi.metmuseum.org/public/collection/v1/search?'
 
         # 変数の設定
@@ -49,7 +49,8 @@ class MetropolitanApp:
             control_frame, text='Prev', command=self.prevArt)
 
         # canvasの設定と最初に表示する作品の設定
-        self.canvas = tk.Canvas(base, bg='black',
+        self.canvas = tk.Canvas(base,
+                                bg='black',
                                 borderwidth=5,
                                 relief=tk.RIDGE,
                                 width=self.canvas_width,
@@ -58,11 +59,15 @@ class MetropolitanApp:
         image_url = response['primaryImageSmall']
 
         # デフォルト作品画像の表示
-        image_pil = Image.open(io.BytesIO(requests.get(image_url)).content)
+        image_pil = Image.open(io.BytesIO(requests.get(image_url).content))
         image_pil = self.resizeArtImage(image_pil)
         self.photo_image = ImageTk.PhotoImage(image_pil)
         self.canvas_number = self.canvas.create_image(
-            self.canvas_width/2 + 5, self.canvas_height/2 + 5, anchor=tk.CENTER, image=self.photo_image)
+            self.canvas_width/2 + 5,
+            self.canvas_height/2 + 5,
+            anchor=tk.CENTER,
+            image=self.photo_image
+        )
 
         # 作品の情報を表示するMessageの設定
         self.artInfoArea = tk.Message(
@@ -93,7 +98,7 @@ class MetropolitanApp:
         self.index_num = 0
 
         # 検索結果の格納
-        self.total.num = response_dict['total']
+        self.total_num = response_dict['total']
         self.art_ids = response_dict['objectIDs']
         self.displayArt(self.art_ids[0])
 
@@ -127,6 +132,7 @@ class MetropolitanApp:
     def getArtObject(self, object_id):
         get_object_url = self.api_object_url + str(object_id)
         api_response = requests.get(get_object_url)
+
         return api_response.json()
 
     # 作品情報の取得
@@ -166,13 +172,15 @@ class MetropolitanApp:
             (
                 int(art_image.width * resize_ratio),
                 int(art_image.height * resize_ratio)
-            ),
+            )
         )
+
+        return art_image
 
 
 # ベースの生成
 base = tk.Tk()
 base.title('The Metropolitan Museum of Art Collection Viewer')
-base.geometry('500×700')
+base.geometry('500x700')
 app = MetropolitanApp(base)
 base.mainloop()
