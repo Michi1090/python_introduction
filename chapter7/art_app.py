@@ -20,7 +20,7 @@ class MetropolitanApp:
         self.index_num = 0
         self.canvas_width = 400
         self.canvas_height = 400
-        self.art_ids = dict()
+        self.art_ids = []
         self.art_info = tk.StringVar()
 
         # 最初に表示する作品のID
@@ -147,7 +147,7 @@ class MetropolitanApp:
     # 作品画像の表示
     def displayArtImage(self, art_object):
         image_url = art_object['primaryImageSmall']
-        image_pil = Image.open(io.BytesIO(requests.get(image_url)).content)
+        image_pil = Image.open(io.BytesIO(requests.get(image_url).content))
         image_pil = self.resizeArtImage(image_pil)
         self.photo_image = ImageTk.PhotoImage(image_pil)
         self.canvas.itemconfig(self.canvas_number, image=self.photo_image)
