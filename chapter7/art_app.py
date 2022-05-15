@@ -20,7 +20,7 @@ class MetropolitanApp:
         self.index_num = 0
         self.canvas_width = 400
         self.canvas_height = 400
-        self.art_ids = []
+        self.art_ids = dict()
         self.art_info = tk.StringVar()
 
         # 最初に表示する作品のID
